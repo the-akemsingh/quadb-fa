@@ -12,6 +12,7 @@ import bar from '../assets/bar.svg';
 interface Todo {
   text: string;
   completed: boolean;
+  notes?: string;
 }
 
 const initialTodos: Todo[] = [
@@ -23,10 +24,45 @@ const initialTodos: Todo[] = [
   "Plan weekend trip"
 ].map(text => ({ text, completed: false }));
 
+const TodoDetailsSidebar = ({ 
+  todo, 
+  onUpdate 
+}: { 
+  todo: Todo | null;
+  onClose: () => void;
+  onUpdate: (updatedTodo: Todo) => void;
+}) => {
+  if (!todo) return null;
+
+
+
+  const handleAddNotes = (notes: string) => {
+    onUpdate({ ...todo, notes });
+  };
+
+
+  return (
+    <div className="ml-1" style={{width:452, height: 964,backgroundColor:'#EEF6EF'}}>
+      
+    </div>
+  );
+};
+
 const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
   const [starredItems, setStarredItems] = useState<number[]>([]);
   const [newTask, setNewTask] = useState<string>('');
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+
+  const handleTodoClick = (todo: Todo) => {
+    setSelectedTodo(todo);
+  };
+
+  const handleUpdateTodo = (updatedTodo: Todo) => {
+    setTodos(todos.map(todo => 
+      todo.text === updatedTodo.text ? updatedTodo : todo
+    ));
+  };
 
   const toggleComplete = (index: number) => {
     setTodos(todos.map((todo, i) =>
@@ -45,7 +81,7 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
   const handleAddTask = () => {
     if (newTask.trim() !== '') {
       setTodos([...todos, { text: newTask.trim(), completed: false }]);
-      setNewTask(''); 
+      setNewTask('');
     }
   };
 
@@ -53,7 +89,8 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
   const completedTodos = todos.filter(todo => todo.completed);
 
   return (
-    <div className="flex gap-12" style={{ height: '' }}>
+    // here
+    <div className={`flex ${selectedTodo ? 'gap-2' : 'gap-12'}`}>
       {sidebar && (
         <div
           className="flex flex-col items-center"
@@ -65,115 +102,106 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
             marginTop: 102,
           }}
         >
-          
           {sidebar && (
-        <div
-          className="flex flex-col items-center"
-          style={{
-            fontFamily: 'Outfit',
-            backgroundColor: '#EEF6EF',
-            width: 280,
-            gap: 9,
-          }}
-        >
-          <img
-            src={pfp}
-            alt="profile-photo"
-            height={118}
-            width={118}
-            style={{ borderRadius: 2947, marginTop: -59 }}
-          />
-          <div>Hey, ABCD</div>
-          <div
-            style={{
-              height: 248,
-              width: 240,
-              backgroundColor: '#FBFDFC',
-            }}
-            className="flex flex-col pt-6 pb-6"
-          >
-            <button className="min-h-10 gap-4 pt-2 pr-4 pb-2 pl-4 flex">
-              <img height={20} width={17} className="mt-1" src={group} alt="" />
-              <span>All Tasks</span>
-            </button>
-            <button
-              className="min-h-10 gap-4 pt-2 pr-4 pb-2 pl-4 flex"
-              style={{ backgroundColor: '#35793729', borderRadius: 8 }}
-            >
-              <img height={20} width={17} className="mt-1" src={Today} alt="" />
-              <div>Today</div>
-            </button>
-            <button className="min-h-10 gap-4 pt-2 pr-4 pb-2 pl-4 flex">
-              <img height={20} width={17} className="mt-1" src={imp} alt="" />
-              <div>Important</div>
-            </button>
-            <button className="min-h-10 gap-4 pt-2 pr-4 pb-2 pl-4 flex">
-              <img height={20} width={17} className="mt-1" src={planned} alt="" />
-              <div>Planned</div>
-            </button>
-            <button className="min-h-10 gap-4 pt-2 pr-4 pb-2 pl-4 flex">
-              <img height={20} width={17} className="mt-1" src={tome} alt="" />
-              <div>Assigned to me</div>
-            </button>
-          </div>
-
-          <div
-            className="pt-6 pb-6 min-w-60 gap-4 flex"
-            style={{
-              height: 88,
-              backgroundColor: '#FBFDFC',
-            }}
-          >
             <div
-              style={{ height: 40, width: 240 }}
-              className="flex gap-4 pt-2 pr-4 pb-2 pl-4"
+              className="flex flex-col items-center"
+              style={{
+                fontFamily: 'Outfit',
+                backgroundColor: '#EEF6EF',
+                width: 280,
+                gap: 9,
+              }}
             >
-              <img height={20} width={20} className="" src={Plus} alt="" />
-              <div>Add list</div>
-            </div>
-          </div>
+              <img
+                src={pfp}
+                alt="profile-photo"
+                height={118}
+                width={118}
+                style={{ borderRadius: 2947, marginTop: -59 }}
+              />
+              <div>Hey, ABCD</div>
+              <div
+                style={{
+                  height: 248,
+                  width: 240,
+                  backgroundColor: '#FBFDFC',
+                }}
+                className="flex flex-col pt-6 pb-6"
+              >
+                <button className="min-h-10 gap-4 pt-2 pr-4 pb-2 pl-4 flex">
+                  <img height={20} width={17} className="mt-1" src={group} alt="" />
+                  <span>All Tasks</span>
+                </button>
+                <button
+                  className="min-h-10 gap-4 pt-2 pr-4 pb-2 pl-4 flex"
+                  style={{ backgroundColor: '#35793729', borderRadius: 8 }}
+                >
+                  <img height={20} width={17} className="mt-1" src={Today} alt="" />
+                  <div>Today</div>
+                </button>
+                <button className="min-h-10 gap-4 pt-2 pr-4 pb-2 pl-4 flex">
+                  <img height={20} width={17} className="mt-1" src={imp} alt="" />
+                  <div>Important</div>
+                </button>
+                <button className="min-h-10 gap-4 pt-2 pr-4 pb-2 pl-4 flex">
+                  <img height={20} width={17} className="mt-1" src={planned} alt="" />
+                  <div>Planned</div>
+                </button>
+                <button className="min-h-10 gap-4 pt-2 pr-4 pb-2 pl-4 flex">
+                  <img height={20} width={17} className="mt-1" src={tome} alt="" />
+                  <div>Assigned to me</div>
+                </button>
+              </div>
 
-          <div
-            style={{ width: 261, paddingTop: 7, paddingBottom: 7, height: 321.13 }}
-            className="pr-3 pl-3"
-          >
-            <img src={bar} alt="sdkf" />
-          </div>
-          
-        </div>
-      )}
+              <div
+                className="pt-6 pb-6 min-w-60 gap-4 flex"
+                style={{
+                  height: 88,
+                  backgroundColor: '#FBFDFC',
+                }}
+              >
+                <div
+                  style={{ height: 40, width: 240 }}
+                  className="flex gap-4 pt-2 pr-4 pb-2 pl-4"
+                >
+                  <img height={20} width={20} className="" src={Plus} alt="" />
+                  <div>Add list</div>
+                </div>
+              </div>
+
+              <div
+                style={{ width: 261, paddingTop: 7, paddingBottom: 7, height: 321.13 }}
+                className="pr-3 pl-3"
+              >
+                <img src={bar} alt="sdkf" />
+              </div>
+
+            </div>
+          )}
         </div>
       )}
 
       <div
-        className="pt-6 pb-6"
+        className="pt-6 pb-6 flex"
         style={{
           flexGrow: 1,
           width: sidebar ? 'calc(100% - 280px)' : '100%',
           backgroundColor: '#FBFDFC',
         }}
       >
-        <div style={{ height: 904, width: '100%' }}>
+        <div className="flex-1">
           {/* Todo Header */}
           <div className="pt-1 pb-1">
             <div className="flex gap-1">
               <p style={{ fontFamily: 'Outfit' }}>To Do</p>
               <button>
-                <img
-                  src={down}
-                  height={6}
-                  width={12}
-                  alt=""
-                  style={{ left: 6, top: 9, borderRadius: 1 }}
-                />
+                <img src={down} height={6} width={12} alt="" />
               </button>
             </div>
           </div>
 
-          <div
-            style={{ width: '100%', height: 178 }}
-            className="pt-4 pb-4 border border-gray-200 rounded-lg"
-          >
+          {/* Add Task Section */}
+          <div className="pt-4 pb-4 border border-gray-200 rounded-lg">
             <div className="flex flex-col gap-2">
               <input
                 type="text"
@@ -183,12 +211,8 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
                 className="text-base pr-5 pl-5 font-normal outline-none"
                 style={{ fontFamily: 'Outfit', height: 146 }}
               />
-              <div
-                style={{ marginTop: -40 }}
-                className="flex justify-between gap-4 pr-5 pl-5"
-              >
-                <div className="flex gap-4 pr-5">
-                </div>
+              <div className="flex justify-between gap-4 pr-5 pl-5" style={{ marginTop: -40 }}>
+                <div className="flex gap-4 pr-5"></div>
                 <button
                   onClick={handleAddTask}
                   className="px-4 py-2 text-sm font-medium rounded-lg"
@@ -205,45 +229,49 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
             </div>
           </div>
 
-          {/* Active Todos Section */}
+          {/* Active Todos */}
           <div className="mt-4">
-            {activeTodos.map((todo) => {
-              const originalIndex = todos.indexOf(todo);
-              return (
-                <div
-                  key={originalIndex}
-                  className="flex items-center justify-between px-5 py-4 border-b border-gray-200"
-                >
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      checked={todo.completed}
-                      onChange={() => toggleComplete(originalIndex)}
-                      className="w-4 h-4 rounded border-gray-300"
-                    />
-                    <span style={{ fontFamily: 'Outfit' }}>{todo.text}</span>
-                  </div>
-                  <button
-                    className="to-black"
-                    onClick={() => toggleStar(originalIndex)}
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill={starredItems.includes(originalIndex) ? 'currentColor' : 'none'}
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                    </svg>
-                  </button>
+            {activeTodos.map((todo, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between px-5 py-4 border-b border-gray-200 cursor-pointer"
+                onClick={() => handleTodoClick(todo)}
+              >
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      toggleComplete(todos.indexOf(todo));
+                    }}
+                    className="w-4 h-4 rounded border-gray-300"
+                  />
+                  <span style={{ fontFamily: 'Outfit' }}>{todo.text}</span>
                 </div>
-              );
-            })}
+                <button
+                  className="text-black"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleStar(todos.indexOf(todo));
+                  }}
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill={starredItems.includes(todos.indexOf(todo)) ? 'currentColor' : 'none'}
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </button>
+              </div>
+            ))}
           </div>
 
-          {/* Completed Section */}
+          {/* Completed Todos */}
           {completedTodos.length > 0 && (
             <>
               <div className="mt-8 mb-4">
@@ -252,49 +280,62 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
                 </p>
               </div>
               <div>
-                {completedTodos.map((todo) => {
-                  const originalIndex = todos.indexOf(todo);
-                  return (
-                    <div
-                      key={originalIndex}
-                      className="flex items-center justify-between px-5 py-4 border-b border-gray-200"
-                    >
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          checked={todo.completed}
-                          onChange={() => toggleComplete(originalIndex)}
-                          className="w-4 h-4 rounded"
-                        />
-                        <span
-                          style={{ fontFamily: 'Outfit' }}
-                          className="line-through text-black"
-                        >
-                          {todo.text}
-                        </span>
-                      </div>
-                      <button
-                        className="to-black"
-                        onClick={() => toggleStar(originalIndex)}
+                {completedTodos.map((todo, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between px-5 py-4 border-b border-gray-200 cursor-pointer"
+                    onClick={() => handleTodoClick(todo)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        checked={todo.completed}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          toggleComplete(todos.indexOf(todo));
+                        }}
+                        className="w-4 h-4 rounded"
+                      />
+                      <span
+                        style={{ fontFamily: 'Outfit' }}
+                        className="line-through text-gray-500"
                       >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill={starredItems.includes(originalIndex) ? 'currentColor' : 'none'}
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                        </svg>
-                      </button>
+                        {todo.text}
+                      </span>
                     </div>
-                  );
-                })}
+                    <button
+                      className="text-black"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleStar(todos.indexOf(todo));
+                      }}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill={starredItems.includes(todos.indexOf(todo)) ? 'currentColor' : 'none'}
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
               </div>
             </>
           )}
         </div>
+
+        {/* Right Sidebar */}
+        {selectedTodo && (
+          <TodoDetailsSidebar
+            todo={selectedTodo}
+            onClose={() => setSelectedTodo(null)}
+            onUpdate={handleUpdateTodo}
+          />
+        )}
       </div>
     </div>
   );

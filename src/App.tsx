@@ -5,20 +5,6 @@ import Signup from "./pages/Signup"
 import Dashboard from "./pages/Dashboard"
 import { useState } from "react"
 
-// import { Menu } from 'lucide-react';
-// import logomark from './assets/logomark.png';
-// import icon from './assets/Icon.svg';
-// import search from './assets/search.svg';
-// import dark from './assets/Vector.svg';
-// import pfp from './assets/pfp.svg';
-// import group from './assets/Group.svg';
-// import Today from './assets/Today.svg';
-// import imp from './assets/Imp.svg';
-// import planned from './assets/planned.svg';
-// import tome from './assets/tome.svg';
-// import Plus from './assets/Plus.svg';
-// import bar from './assets/bar.svg';
-// import { useState } from 'react';
 
 function App() {
     const [sidebar, setSidebar] = useState(false);
