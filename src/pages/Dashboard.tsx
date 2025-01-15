@@ -37,11 +37,11 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
     setSelectedTodo(todo);
   };
 
-  const handleUpdateTodo = (updatedTodo: Todo) => {
-    setTodos(todos.map(todo => 
-      todo.text === updatedTodo.text ? updatedTodo : todo
-    ));
-  };
+  // const handleUpdateTodo = (updatedTodo: Todo) => {
+  //   setTodos(todos.map(todo => 
+  //     todo.text === updatedTodo.text ? updatedTodo : todo
+  //   ));
+  // };
 
   const toggleComplete = (index: number) => {
     setTodos(todos.map((todo, i) =>
@@ -316,7 +316,6 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
             starredItems={starredItems}
             setStarredItems={setStarredItems}
             onClose={() => setSelectedTodo(null)}
-            onUpdate={handleUpdateTodo}
           />
         )}
       </div>
