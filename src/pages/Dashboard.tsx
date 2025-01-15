@@ -26,7 +26,7 @@ const initialTodos: Todo[] = [
 
 const TodoDetailsSidebar = ({ 
   todo, 
-  onUpdate 
+  // onUpdate 
 }: { 
   todo: Todo | null;
   onClose: () => void;
@@ -36,14 +36,14 @@ const TodoDetailsSidebar = ({
 
 
 
-  const handleAddNotes = (notes: string) => {
-    onUpdate({ ...todo, notes });
-  };
+  // const handleAddNotes = (notes: string) => {
+  //   onUpdate({ ...todo, notes });
+  // };
 
 
   return (
     <div className="ml-1" style={{width:452, height: 964,backgroundColor:'#EEF6EF'}}>
-      
+
     </div>
   );
 };
