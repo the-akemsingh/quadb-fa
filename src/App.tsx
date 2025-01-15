@@ -13,14 +13,14 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/signin",
       element: <><Navbar sidebar={sidebar} setSidebar={setSidebar} ></Navbar> <Signin /></>
     },
     {
       path: "/signup",
       element: <> <Navbar sidebar={sidebar} setSidebar={setSidebar} ></Navbar><Signup /></>
     }, {
-      path: "/todos",
+      path: "/",
       element: <> <Navbar sidebar={sidebar} setSidebar={setSidebar} ></Navbar><Dashboard sidebar={sidebar} /> </>
     }
   ])
