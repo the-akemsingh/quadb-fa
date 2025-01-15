@@ -1,4 +1,4 @@
-import { X, Trash2 } from 'lucide-react';
+import { X } from 'lucide-react';
 import Plus from '../assets/Plus.svg';
 import date from '../assets/date.svg';
 import repeat from '../assets/repeat.svg';
