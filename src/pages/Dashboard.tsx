@@ -8,6 +8,7 @@ import planned from '../assets/planned.svg';
 import tome from '../assets/tome.svg';
 import Plus from '../assets/Plus.svg';
 import bar from '../assets/bar.svg';
+import TodoDetailsSidebar from '../components/TodoDetailsSidebar';
 
 interface Todo {
   text: string;
@@ -24,29 +25,7 @@ const initialTodos: Todo[] = [
   "Plan weekend trip"
 ].map(text => ({ text, completed: false }));
 
-const TodoDetailsSidebar = ({ 
-  todo, 
-  // onUpdate 
-}: { 
-  todo: Todo | null;
-  onClose: () => void;
-  onUpdate: (updatedTodo: Todo) => void;
-}) => {
-  if (!todo) return null;
 
-
-
-  // const handleAddNotes = (notes: string) => {
-  //   onUpdate({ ...todo, notes });
-  // };
-
-
-  return (
-    <div className="ml-1" style={{width:452, height: 964,backgroundColor:'#EEF6EF'}}>
-
-    </div>
-  );
-};
 
 const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
@@ -70,7 +49,7 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
     ));
   };
 
-  const toggleStar = (index: number) => {
+  function toggleStar (index: number) {
     setStarredItems(prev =>
       prev.includes(index)
         ? prev.filter(i => i !== index)
@@ -298,7 +277,7 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
                       />
                       <span
                         style={{ fontFamily: 'Outfit' }}
-                        className="line-through text-gray-500"
+                        className="line-through text-black"
                       >
                         {todo.text}
                       </span>
@@ -332,6 +311,10 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
         {selectedTodo && (
           <TodoDetailsSidebar
             todo={selectedTodo}
+            todos={todos}
+            setTodos={setTodos}
+            starredItems={starredItems}
+            setStarredItems={setStarredItems}
             onClose={() => setSelectedTodo(null)}
             onUpdate={handleUpdateTodo}
           />
@@ -340,5 +323,7 @@ const Dashboard = ({ sidebar }: { sidebar: boolean }) => {
     </div>
   );
 };
+
+
 
 export default Dashboard;
